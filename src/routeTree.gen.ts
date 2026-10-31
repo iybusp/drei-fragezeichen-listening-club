@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as EinstellungenRouteImport } from './routes/einstellungen'
 import { Route as FolgenRouteImport } from './routes/folgen'
 import { Route as FolgeNummerRouteImport } from './routes/folge.$nummer'
 import { Route as UUsernameRouteImport } from './routes/u.$username'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EinstellungenRoute = EinstellungenRouteImport.update({
+  id: '/einstellungen',
+  path: '/einstellungen',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FolgenRoute = FolgenRouteImport.update({
@@ -44,6 +50,7 @@ const UUsernameRoute = UUsernameRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/einstellungen': typeof EinstellungenRoute
   '/folgen': typeof FolgenRoute
   '/folge/$nummer': typeof FolgeNummerRoute
   '/u/$username': typeof UUsernameRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/einstellungen': typeof EinstellungenRoute
   '/folgen': typeof FolgenRoute
   '/folge/$nummer': typeof FolgeNummerRoute
   '/u/$username': typeof UUsernameRoute
@@ -59,21 +67,42 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/einstellungen': typeof EinstellungenRoute
   '/folgen': typeof FolgenRoute
   '/folge/$nummer': typeof FolgeNummerRoute
   '/u/$username': typeof UUsernameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/folgen' | '/folge/$nummer' | '/u/$username'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/einstellungen'
+    | '/folgen'
+    | '/folge/$nummer'
+    | '/u/$username'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/folgen' | '/folge/$nummer' | '/u/$username'
-  id: '__root__' | '/' | '/auth' | '/folgen' | '/folge/$nummer' | '/u/$username'
+  to:
+    | '/'
+    | '/auth'
+    | '/einstellungen'
+    | '/folgen'
+    | '/folge/$nummer'
+    | '/u/$username'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/einstellungen'
+    | '/folgen'
+    | '/folge/$nummer'
+    | '/u/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  EinstellungenRoute: typeof EinstellungenRoute
   FolgenRoute: typeof FolgenRoute
   FolgeNummerRoute: typeof FolgeNummerRoute
   UUsernameRoute: typeof UUsernameRoute
@@ -93,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/einstellungen': {
+      id: '/einstellungen'
+      path: '/einstellungen'
+      fullPath: '/einstellungen'
+      preLoaderRoute: typeof EinstellungenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/folgen': {
@@ -122,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  EinstellungenRoute: EinstellungenRoute,
   FolgenRoute: FolgenRoute,
   FolgeNummerRoute: FolgeNummerRoute,
   UUsernameRoute: UUsernameRoute,

@@ -10,11 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as FolgenRouteImport } from './routes/folgen'
+import { Route as FolgeNummerRouteImport } from './routes/folge.$nummer'
+import { Route as UUsernameRouteImport } from './routes/u.$username'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FolgenRoute = FolgenRouteImport.update({
@@ -22,31 +30,53 @@ const FolgenRoute = FolgenRouteImport.update({
   path: '/folgen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FolgeNummerRoute = FolgeNummerRouteImport.update({
+  id: '/folge/$nummer',
+  path: '/folge/$nummer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UUsernameRoute = UUsernameRouteImport.update({
+  id: '/u/$username',
+  path: '/u/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/folgen': typeof FolgenRoute
+  '/folge/$nummer': typeof FolgeNummerRoute
+  '/u/$username': typeof UUsernameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/folgen': typeof FolgenRoute
+  '/folge/$nummer': typeof FolgeNummerRoute
+  '/u/$username': typeof UUsernameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/folgen': typeof FolgenRoute
+  '/folge/$nummer': typeof FolgeNummerRoute
+  '/u/$username': typeof UUsernameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/folgen'
+  fullPaths: '/' | '/auth' | '/folgen' | '/folge/$nummer' | '/u/$username'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/folgen'
-  id: '__root__' | '/' | '/folgen'
+  to: '/' | '/auth' | '/folgen' | '/folge/$nummer' | '/u/$username'
+  id: '__root__' | '/' | '/auth' | '/folgen' | '/folge/$nummer' | '/u/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   FolgenRoute: typeof FolgenRoute
+  FolgeNummerRoute: typeof FolgeNummerRoute
+  UUsernameRoute: typeof UUsernameRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +88,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/folgen': {
       id: '/folgen'
       path: '/folgen'
@@ -65,12 +102,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FolgenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/folge/$nummer': {
+      id: '/folge/$nummer'
+      path: '/folge/$nummer'
+      fullPath: '/folge/$nummer'
+      preLoaderRoute: typeof FolgeNummerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/u/$username': {
+      id: '/u/$username'
+      path: '/u/$username'
+      fullPath: '/u/$username'
+      preLoaderRoute: typeof UUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   FolgenRoute: FolgenRoute,
+  FolgeNummerRoute: FolgeNummerRoute,
+  UUsernameRoute: UUsernameRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
